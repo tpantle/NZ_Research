@@ -207,139 +207,17 @@ abline(lm(fj_snow_off$fj ~ fj_snow_off$system.time_start, col='red'))
 #  stat_smooth(method = "lm", col = "red", alpha = .25) # this will fit the trend line
 
 
-# plot for each month of FJ_SNOW_ON
-par(mfrow=c(2,3))
-# JUNE (6)
-plot(fj_snow_on$year[fj_snow_on$month==6],
-  fj_snow_on$fj[fj_snow_on$month==6],
-     main = 'Franz Joseph Albedo of Snow-On (June)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-     )
-abline(lm(fj_snow_on$fj[fj_snow_on$month==6] ~
-          fj_snow_on$year[fj_snow_on$month==6]))
-#JULY(7)
-plot(fj_snow_on$year[fj_snow_on$month==7],
-     fj_snow_on$fj[fj_snow_on$month==7],
-     main = 'Franz Joseph Albedo of Snow-On (July)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_on$fj[fj_snow_on$month==7] ~
-            fj_snow_on$year[fj_snow_on$month==7]))
-#AUGUST(8)
-plot(fj_snow_on$year[fj_snow_on$month==8],
-     fj_snow_on$fj[fj_snow_on$month==8],
-     main = 'Franz Joseph Albedo of Snow-On (Aug.)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_on$fj[fj_snow_on$month==8] ~
-            fj_snow_on$year[fj_snow_on$month==8]))
-#SEPTEMBER(9)
-plot(fj_snow_on$year[fj_snow_on$month==9],
-     fj_snow_on$fj[fj_snow_on$month==9],
-     main = 'Franz Joseph Albedo of Snow-On (Sept.)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_on$fj[fj_snow_on$month==9] ~
-            fj_snow_on$year[fj_snow_on$month==9]))
-#OCTOBER(10)
-plot(fj_snow_on$year[fj_snow_on$month==10],
-     fj_snow_on$fj[fj_snow_on$month==10],
-     main = 'Franz Joseph Albedo of Snow-On (Octl)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_on$fj[fj_snow_on$month==10] ~
-            fj_snow_on$year[fj_snow_on$month==10]))
-#NOV
-plot(fj_snow_off$year[fj_snow_off$month==11],
-     fj_snow_off$fj[fj_snow_off$month==11],
-     main = 'Franz Joseph Albedo of Snow-Off (Nov)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_off$fj[fj_snow_off$month==11] ~
-            fj_snow_off$year[fj_snow_off$month==11]))
-#DEC
-plot(fj_snow_off$year[fj_snow_off$month==12],
-     fj_snow_off$fj[fj_snow_off$month==12],
-     main = 'Franz Joseph Albedo of Snow-Off (Dec)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_off$fj[fj_snow_off$month==12] ~
-            fj_snow_off$year[fj_snow_off$month==12]))
-#JAN
-plot(fj_snow_off$year[fj_snow_off$month==1],
-     fj_snow_off$fj[fj_snow_off$month==1],
-     main = 'Franz Joseph Albedo of Snow-Off (Jan)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_off$fj[fj_snow_off$month==1] ~
-            fj_snow_off$year[fj_snow_off$month==1]))
-#FEB
-plot(fj_snow_off$year[fj_snow_off$month==2],
-     fj_snow_off$fj[fj_snow_off$month==2],
-     main = 'Franz Joseph Albedo of Snow-Off (Feb)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_off$fj[fj_snow_off$month==2] ~
-            fj_snow_off$year[fj_snow_off$month==2]))
-#MARCH
-plot(fj_snow_off$year[fj_snow_off$month==3],
-     fj_snow_off$fj[fj_snow_off$month==3],
-     main = 'Franz Joseph Albedo of Snow-Off (Mar)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_off$fj[fj_snow_off$month==3] ~
-            fj_snow_off$year[fj_snow_off$month==3]))
-#APR
-plot(fj_snow_off$year[fj_snow_off$month==4],
-     fj_snow_off$fj[fj_snow_off$month==4],
-     main = 'Franz Joseph Albedo of Snow-Off (Apr)',
-     xlab = 'Year',
-     ylab = 'Albedo',
-     type='p',
-     pch = 16,
-)
-abline(lm(fj_snow_off$fj[fj_snow_off$month==4] ~
-            fj_snow_off$year[fj_snow_off$month==4]))
 
-### the above copy/paste is inefficient
-### write for loop for snow on and snow off months
+### write for loops for snow on and snow off months
+### this will give us 12 plots--one of each month--of each glacier
 
-# double check values being pulled with UNIQUE function
-unique(fj_snow_on$month)
+par(mfrow=c(2,3)) #set plot window to show 6 plots at a time
+
+# double-check month values being pulled with UNIQUE function
+unique(fj_snow_on$month) #checked with fj datasets, results apply to all
 unique(fj_snow_off$month)
-#fj.color = topo.colors(unique(fj_snow_on$month))
 
-# SNOW ON months for loop
+# FJ SNOW ON months for loop
 for(i in unique(fj_snow_on$month)) {
   plot(fj_snow_on$year[fj_snow_on$month==i],
        fj_snow_on$fj[fj_snow_on$month==i],
@@ -355,7 +233,7 @@ for(i in unique(fj_snow_on$month)) {
               fj_snow_on$year[fj_snow_on$month==i]))
 }
 
-# SNOW OFF months for loop
+# FJ SNOW OFF months for loop
 for(i in unique(fj_snow_off$month)) {
   plot(fj_snow_off$year[fj_snow_off$month==i],
        fj_snow_off$fj[fj_snow_off$month==i],
@@ -371,4 +249,66 @@ for(i in unique(fj_snow_off$month)) {
               fj_snow_off$year[fj_snow_off$month==i]))
 }
 
+# FOX SNOW ON months for loop
+for(i in unique(fox_snow_on$month)) {
+  plot(fox_snow_on$year[fox_snow_on$month==i],
+       fox_snow_on$fox[fox_snow_on$month==i],
+       xlim = range(fox_snow_on$year),
+       ylim = range(fox_snow_on$fox),
+       xlab = 'Date',
+       ylab = 'Albedo',
+       main = paste('Fox Snow-On Albedo: Month', i),
+       pch=16
+  )
+  #include trendline
+  abline(lm(fox_snow_on$fox[fox_snow_on$month==i] ~
+              fox_snow_on$year[fox_snow_on$month==i]))
+}
+print(fox_snow_off$fox,na.omit=TRUE)
+# FOX SNOW OFF months for loop
+for(i in unique(fox_snow_off$month)) {
+  plot(fox_snow_off$year[fox_snow_off$month==i],
+       fox_snow_off$fox[fox_snow_off$month==i],
+       xlim = range(fox_snow_off$year),
+       ylim = range(15:73),
+       xlab = 'Date',
+       ylab = 'Albedo',
+       main = paste('Fox Snow-Off Albedo: Month', i),
+       pch=16
+  )
+  #include trendline
+  abline(lm(fox_snow_off$fox[fox_snow_off$month==i] ~
+              fox_snow_off$year[fox_snow_off$month==i]))
+}
+
+# TASMAN SNOW ON months for loop
+for(i in unique(tas_snow_on$month)) {
+  plot(tas_snow_on$year[tas_snow_on$month==i],
+       tas_snow_on$tasman[tas_snow_on$month==i],
+       xlim = range(tas_snow_on$year),
+       ylim = range(tas_snow_on$tasman),
+       xlab = 'Date',
+       ylab = 'Albedo',
+       main = paste('Tasman Snow-On Albedo: Month', i),
+       pch=16
+  )
+  #include trendline
+  abline(lm(tas_snow_on$tasman[tas_snow_on$month==i] ~
+              tas_snow_on$year[tas_snow_on$month==i]))
+}
+# TASMAN SNOW OFF months for loop
+for(i in unique(tas_snow_off$month)) {
+  plot(tas_snow_off$year[tas_snow_off$month==i],
+       tas_snow_off$tasman[tas_snow_off$month==i],
+       xlim = range(tas_snow_off$year),
+       ylim = range(tas_snow_off$tasman),
+       xlab = 'Date',
+       ylab = 'Albedo',
+       main = paste('Tasman Snow-Off Albedo: Month', i),
+       pch=16
+  )
+  #include trendline
+  abline(lm(tas_snow_off$tasman[tas_snow_off$month==i] ~
+              tas_snow_off$year[tas_snow_off$month==i]))
+}
 

@@ -16,11 +16,12 @@ fox_avg <- read.csv("/Users/TylerPantle/Documents/NZ_research/Fox_avg.csv")
 fox <- read.csv("/Users/TylerPantle/Documents/NZ_research/Fox_multi.csv")
 
 #install packages for data analysis
-install.packages(c("dplyr", "stringr", "tidyverse","ggplot2"))
+install.packages(c("dplyr", "stringr", "tidyverse","ggplot2","tidyr"))
 library(dplyr)
 library(stringr)
 library(tidyverse)
 library(ggplot2)
+library(tidyr)
 
 ###################################
 #
@@ -264,7 +265,7 @@ for(i in unique(fox_snow_on$month)) {
   abline(lm(fox_snow_on$fox[fox_snow_on$month==i] ~
               fox_snow_on$year[fox_snow_on$month==i]))
 }
-print(fox_snow_off$fox,na.omit=TRUE)
+
 # FOX SNOW OFF months for loop
 for(i in unique(fox_snow_off$month)) {
   plot(fox_snow_off$year[fox_snow_off$month==i],
@@ -312,3 +313,82 @@ for(i in unique(tas_snow_off$month)) {
               tas_snow_off$year[tas_snow_off$month==i]))
 }
 
+####
+# combine all glacier data into 12 monthly plots, highlighting each glacier
+
+# merge all SNOW ON
+merge1 <- merge(fj_snow_on,fox_snow_on, by='system.time_start')
+snow_on <- merge(merge1,tas_snow_on,by='system.time_start')
+snow_on[9:13]<-list(NULL) #remove repeating columns
+snow_on[10:14]<-list(NULL) #remove repeating columns
+
+# tidyr clean up SNOW ON dataset for easier plotting
+# create Glacier and Albedo columns
+snow_on <- snow_on %>%
+  pivot_longer(c('fj','fox','tasman'), names_to = "Glacier", values_to = "Albedo")
+print(snow_on)
+
+# plot SNOW ON
+# change month in line 332:37 for desired month plot
+ggplot(subset(snow_on, month.x %in% 5), aes(x=system.time_start, y=Albedo, colour = Glacier)) +
+  facet_wrap(vars(Glacier), ncol = 3) + 
+  geom_point() +
+  geom_smooth(method=lm) +
+  labs(x = "Date", y = "Albedo") +
+  ggtitle("Franz Joseph, Fox, and Tasman Glacial Albedos during May (2000-2020)") 
+  
+
+#merge all SNOW OFF
+merge2 <- merge(fj_snow_off,fox_snow_off, by='system.time_start')
+snow_off <- merge(merge2,tas_snow_off, by='system.time_start')
+snow_off[9:13]<-list(NULL) #remove repeating columns
+snow_off[10:14]<-list(NULL) #remove repeating columns
+
+# tidyr clean up SNOW OFF dataset for easier plotting
+# create Glacier and Albedo columns
+snow_off <- snow_off %>%
+  pivot_longer(c('fj','fox','tasman'), names_to = "Glacier", values_to = "Albedo")
+print(snow_off)
+
+# plot SNOW OFF
+# change month in line 354:38 for desired month plot
+ggplot(subset(snow_off, month.x %in% 11), aes(x=system.time_start, y=Albedo, colour = Glacier)) +
+  facet_wrap(vars(Glacier), ncol = 3) + 
+  geom_point() +
+  geom_smooth(method=lm) +
+  labs(x = "Date", y = "Albedo") +
+  ggtitle("Franz Joseph, Fox, and Tasman Glacial Albedos during Snow-Off Months (2000-2020)") 
+
+# merge SNOW_ON and SNOW_OFF
+months <- rbind(snow_on,snow_off)
+# edit data for cleaner plot labels
+# replace glacier column with proper names for plots
+months$Glacier[months$Glacier=='fj'] <- 'Franz Joseph'
+months$Glacier[months$Glacier=='fox'] <- 'Fox'
+months$Glacier[months$Glacier=='tasman'] <- 'Tasman'
+# replace month number with names 
+months$month.x <- month.name[months$month.x]
+
+# now we have all glacier data together so we can write 1 for loop...
+# ...instead of 2 for loops for snow on and snow off
+# use for loop to create 12 graphs
+unique(months$month.x) # double-check month values you'll be attaching to 1
+for(i in unique(months$month.x)) {
+  print(ggplot(subset(months, month.x==i), aes(x=system.time_start, y=Albedo, colour = Glacier)) +
+    facet_wrap(vars(Glacier), ncol = 3) + 
+    geom_point() +
+    geom_smooth(method=lm) +
+    labs(x = "Date", y = "Albedo") +
+    ggtitle("2000-2020 Glacial Albedos during ",i)) 
+}
+
+
+###
+# compare this season to "normal"
+# find trend of "normal"...
+    # 1) expected values for Nov'19-Apr/May'20
+    # 2) note slope of "normal" for avg change per year
+# difference in expected vs measured
+# avergae monthly albedo vs most recent montly albedo Nov'19-Apr/May'20
+
+# 
